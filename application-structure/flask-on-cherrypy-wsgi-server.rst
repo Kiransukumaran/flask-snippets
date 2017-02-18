@@ -1,7 +1,7 @@
-Deploying Flask on Cherrypy WSGI server
-=======================================
+Deploying Flask on Cheroot WSGI server
+======================================
 
-CherryPy_ comes with a `WSGI compliant server`_, so running a Flask application on top of CherryPy is a piece of cake.
+Running a Flask application on top of Cheroot_ is a piece of cake.
 
 Here is the Flask hello world app for reference:
 
@@ -17,23 +17,23 @@ Here is the Flask hello world app for reference:
     if __name__ == "__main__":
         app.run()
 
-The following snippet let you run the Flask app on top of the WSGI server shipped with CherryPy.
+The following snippet let you run the Flask app on top of the WSGI server shipped with Cheroot.
 
 .. code-block:: python
 
-    from cherrypy import wsgiserver
+    from cheroot.wsgi import PathInfoDispatcher
+    from cheroot.wsgi import Server
     from hello import app
 
-    d = wsgiserver.WSGIPathInfoDispatcher({'/': app})
-    server = wsgiserver.CherryPyWSGIServer(('0.0.0.0', 8080), d)
+    d = PathInfoDispatcher({'/': app})
+    server = Server(('0.0.0.0', 8080), d)
 
     if __name__ == '__main__':
-       try:
+        try:
             server.start()
-       except KeyboardInterrupt:
+        except KeyboardInterrupt:
             server.stop()
 
-You can access the server running on 0.0.0.0:8080. WSGIPathInfoDispatcher take as argument a dictionary mapping a path to an application object, so you can easily deploy multiple (Flask) application on a single CherryPy server.
+You can access the server running on 0.0.0.0:8080. PathInfoDispatcher take as argument a dictionary mapping a path to an application object, so you can easily deploy multiple (Flask) application on a single Cheroot server.
 
-.. _CherryPy: http://www.cherrypy.org/
-.. _WSGI compliant server: http://www.cherrypy.org/wiki/WSGI
+.. _Cheroot: https://github.com/cherrypy/cheroot
